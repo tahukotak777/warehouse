@@ -7,6 +7,7 @@
             <thead>
                 <tr class="bg-blue-500">
                     <th>No</th>
+                    <th>User Name</th>
                     <th>Product Name</th>
                     <th>Mutation Type</th>
                     <th>Quantity</th>

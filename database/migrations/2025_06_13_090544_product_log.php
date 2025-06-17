@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create("product_logs", function(Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->references('id')->on('users');
             $table->foreignId('product_id')->references('id')->on("products");
             $table->enum("mutation_type", ['IN', 'OUT']);
             $table->integer("quantity");

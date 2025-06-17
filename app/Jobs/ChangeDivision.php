@@ -2,17 +2,16 @@
 
 namespace App\Jobs;
 
-use App\Models\products;
+use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Facades\Validator;
 
-class UpdateProduct implements ShouldQueue
+class ChangeDivision implements ShouldQueue
 {
     use Queueable;
 
-    protected $attributes;
-    protected $product;
+    public $attributes;
+    public $user;
 
     /**
      * Create a new job instance.
@@ -20,15 +19,16 @@ class UpdateProduct implements ShouldQueue
     public function __construct($attributes, $id)
     {
         $this->attributes = $attributes;
-        $this->product = products::findOrFail($id);
+        $this->user = User::findOrFail($id);
     }
 
     /**
      * Execute the job.
      */
-    public function handle()
+    public function handle(): void
     {
-        $this->product->update($this->attributes);
-        // $this->product->save();
+        $this->user->update([
+            'division'=>$this->attributes['division'],
+        ]);
     }
 }

@@ -42,7 +42,9 @@ class ProductController extends Controller
     }
 
     public function stock(Request $request) {
-        dispatch_sync(new ManageStock($request->all()));
+        $user_id = auth()->user()->id;
+
+        dispatch_sync(new ManageStock($request->all(), $user_id ));
 
         return redirect()->back()->with('alert', [
             'type'=>'success',

@@ -1,5 +1,6 @@
 <tr>
   <td>{{$index}}</td>
+  <td>{{$log->user->name}}</td>
   <td>{{$log->product->name}}</td>
   <td>{{$log->mutation_type}}</td>
   <td>{{$log->quantity}}</td>

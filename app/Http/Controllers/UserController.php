@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ChangeDivision;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -67,6 +68,15 @@ class UserController extends Controller
         return redirect()->intended('/')->with('alert', [
             'type'=>'success',
             'message'=>'you have successfully logged out'
+        ]);
+    }
+
+    public function manage_division(Request $request, $id) {
+        dispatch_sync(new ChangeDivision($request->all(), $id));
+
+        return redirect()->intended('/user')->with('alert', [
+            'type'=>'success',
+            'message'=>'berhasil mengubah divisi'
         ]);
     }
 }

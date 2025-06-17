@@ -17,14 +17,16 @@ class Activity
     public $IdProduct;
     public $mutation_type;
     public $quantity;
+    public $user_id;
     /**
      * Create a new event instance.
      */
-    public function __construct($IdProduct, $mutation_type, $quantity)
+    public function __construct($IdProduct, $mutation_type, $quantity, $user_id)
     {
         $this->IdProduct = $IdProduct;
         $this->mutation_type = $mutation_type;
         $this->quantity = $quantity;
+        $this->user_id = $user_id;
     }
 
     /**

@@ -23,6 +23,7 @@ class CreateLog
     public function handle(Activity $event): void
     {
         product_log::create([
+            'user_id'=>$event->user_id,
             'product_id'=>$event->IdProduct,
             'mutation_type'=>$event->mutation_type,
             'quantity'=>$event->quantity,

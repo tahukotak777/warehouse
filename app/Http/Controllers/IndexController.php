@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\product_log;
 use App\Models\products;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
@@ -13,12 +14,11 @@ class IndexController extends Controller
     public function dashboard()
     {
         $user_division = Auth::user()->division;
-        $products = products::latest()->get();
 
-        if ($user_division == 'manager' || $user_division == 'production') {
-            return view("pages.dashboard", [
-                'products' => $products,
-            ]);
+        if ($user_division == 'manager') {
+            return redirect('/user');
+        } else if ($user_division == 'production') {
+            return redirect('/product');
         } else if ($user_division == 'stock') {
             return redirect('/stock');
         } else {
@@ -36,30 +36,66 @@ class IndexController extends Controller
         return view('pages.register');
     }
 
+    public function product() {
+        if (auth()->user()->division == 'production') {
+            $products = products::all();
+    
+            return view('pages.products', [
+                'products'=>$products,
+            ]);
+        }
+    }
+
     public function editProduct($id)
     {
-        $product = products::findOrFail($id);
-
-        return view('pages.edit', data: [
-            'product' => $product,
-        ]);
+        if (auth()->user()->division == 'production') {
+            $product = products::findOrFail($id);
+    
+            return view('pages.edit', data: [
+                'product' => $product,
+            ]);
+        }
     }
 
     public function logs()
     {
-        $logs = product_log::latest()->get();
-
-        return view('pages.logs', [
-            'logs' => $logs,
-        ]);
+        if (auth()->user()->division == 'production') {
+            $logs = product_log::latest()->get();
+    
+            return view('pages.logs', [
+                'logs' => $logs,
+            ]);
+        }
     }
 
     public function stock()
     {
-        $products = products::all();
+        if (auth()->user()->division == 'stock') {
+            $products = products::all();
+    
+            return view('pages.stocks', [
+                'products' => $products,
+            ]);
+        }
+    }
 
-        return view('pages.stocks', [
-            'products' => $products,
-        ]);
+    public function user() {
+        if (auth()->user()->division == 'manager') {
+            $users = User::all(['id','name', 'email', 'division']);
+    
+            return view('pages.users', [
+                'users'=>$users,
+            ]);
+        }
+    }
+
+    public function manage_division($id) {
+        if (auth()->user()->division == 'manager') {
+            $user = User::findOrFail($id, ['id','name', 'email', 'division']);
+    
+            return view('pages.manage_division', [
+                'user'=>$user,
+            ]);
+        }
     }
 }
